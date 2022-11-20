@@ -1,0 +1,4 @@
+Seuil rouge teint : 243,255,0
+Seuil bleu teint : 0,255,235
+Seuil luminausité : 239,255,239
+Seuil saturation : 0,20,0
