@@ -1,6 +1,8 @@
 import sys
 import tkinter as tk
 import numpy as np 
+import colorsys
+import matplotlib.colors as mcol
 
 wordList = ["maison","tête","ville","temps","porte" ,"pays","route","raison",
 "homme","cœur","femme","dieu","amour","monde" ,"voiture" ,"jour",
@@ -13,6 +15,7 @@ class TeintRouge():
     iBlue = 0
     iWhite = 0
     iBlack = 0
+    iSat = 0
 
     #Variable constante
     range = 2
@@ -110,7 +113,7 @@ class TeintRouge():
         self.str = tk.Label(self.window, text="Data Writen , please press <Enter>" , fg = "black" , bg = "white")
         self.str.place(relx = 0.5 , rely = 0.5 , anchor = 'center')
 
-        ##Expérience 2 : teint en allant vers le bleu
+    ##Expérience 2 : teint en allant vers le bleu
     def firstPageTeintBlue(self , event):
         self.clearWin()
         self.window.configure(bg =self._from_rgb(255, 255, 255))
@@ -157,7 +160,7 @@ class TeintRouge():
         self.str = tk.Label(self.window, text="Data Writen , please press <Enter>" , fg = "black" , bg = "white")
         self.str.place(relx = 0.5 , rely = 0.5 , anchor = 'center')
 
-        ##Expérience 3 : controle luminausité
+    ##Expérience 3 : controle luminosité
     def firstPageL(self , event):
         self.clearWin()
         self.window.configure(bg =self._from_rgb(255, 255, 255))
@@ -202,15 +205,15 @@ class TeintRouge():
         self.str = tk.Label(self.window, text="Data Writen , please press <Enter>" , fg = "black" , bg = "white")
         self.str.place(relx = 0.5 , rely = 0.5 , anchor = 'center')
 
-        ##Expérience 4 : controle saturartion
-    def firstPageS(self , event):
+    ##Expérience 4 : controle saturartion
+    def firstPageLN(self , event):
         self.clearWin()
         self.window.configure(bg =self._from_rgb(255, 255, 255))
         str = tk.Label(self.window, text="Press any <Space> to start" , fg = "black" , bg ="white")
         str.place(relx = 0.5 , rely = 0.5 , anchor = 'center')
-        self.window.bind("<space>",self.SatTest)
+        self.window.bind("<space>",self.LNTest)
 
-    def SatTest(self, event):
+    def LNTest(self, event):
         """Fonction réalisant le test de teint"""
         self.clearWin()
         self.window.bind("<space>", self.nextColorS)
@@ -221,13 +224,13 @@ class TeintRouge():
         self.window.configure(bg = self.bg)
         self.window.mainloop()
 
-    def nextColorS(self , event = None):
+    def nextColorLN(self , event = None):
         """Fonction permettant de passer à la prochaine couleur dans l'expérience 1 """
         self.showWord()
         self.window.bind("<space>", self.configBgExpS)
         self.window.bind("<Return>", self.writeDataS)
     
-    def configBgExpS(self , event):
+    def configBgExpLN(self , event):
         """Fonction permettant de changer à la prochaine couleur dans l'expérience 1"""
         self.window.bind("<space>", self.nextColorS)
         self.clearWin()
@@ -239,7 +242,55 @@ class TeintRouge():
         self.window.configure(bg=self.bg) 
         self.writeWord()
     
-    def writeDataS(self , event):
+    def writeDataLN(self , event):
+        self.window.unbind("<Return>")
+        self.window.unbind("<space>")
+        self.window.bind("<Return>",self.quitWin)
+        self.f.write("Seuil saturation : 0,"+ str(self.range*self.iBlack)+ ",0\n")
+        self.str = tk.Label(self.window, text="Data Writen , please press <Enter>" , fg = "black" , bg = "white")
+        self.str.place(relx = 0.5 , rely = 0.5 , anchor = 'center')
+
+    ##Expérience 5 : controle saturartion
+    def firstPageSat(self):
+        self.clearWin()
+        self.window.configure(bg =self._from_rgb(255, 255, 255))
+        str = tk.Label(self.window, text="Press any <Space> to start" , fg = "black" , bg ="white")
+        str.place(relx = 0.5 , rely = 0.5 , anchor = 'center')
+        self.window.bind("<space>",self.SatTest)
+
+    def SatTest(self, event):
+        """Fonction réalisant le test de teint"""
+        self.clearWin()
+        self.window.bind("<space>", self.nextColorSat)
+        self.window.bind("<Return>", self.writeDataSat)
+        
+        self.bg=self._from_rgb(0, 255, 0)
+        self.writeWord()
+        self.window.configure(bg = self.bg)
+        self.window.mainloop()
+
+    def nextColorSat(self , event = None):
+        """Fonction permettant de passer à la prochaine couleur dans l'expérience 1 """
+        self.showWord()
+        self.window.bind("<space>", self.configBgExpSat)
+        self.window.bind("<Return>", self.writeDataSat)
+    
+    def configBgExpSat(self , event):
+        """Fonction permettant de changer à la prochaine couleur dans l'expérience 1"""
+        self.window.bind("<space>", self.nextColorSat)
+        self.clearWin()
+        if(self.iSat < 100):
+            self.iSat += 1
+            hsv = mcol.hsv_to_rgb([120/255,1,0.5])
+            print(hsv)
+            self.bg = self._from_rgb()
+        else:
+            self.window.destroy()
+        self.window.configure(bg=self.bg) 
+        print('before word')
+        self.writeWord()
+    
+    def writeDataSat(self , event):
         self.window.unbind("<Return>")
         self.window.unbind("<space>")
         self.window.bind("<Return>",self.quitWin)
@@ -249,4 +300,5 @@ class TeintRouge():
 
 
 interface = TeintRouge("test.txt")
-interface.firstPageTeintRouge()
+interface.firstPageSat()
+interface.window.mainloop()
