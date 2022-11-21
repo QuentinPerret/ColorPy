@@ -1,8 +1,6 @@
 import sys
 import tkinter as tk
 import numpy as np 
-import colorsys
-import matplotlib.colors as mcol
 
 wordList = ["maison","tête","ville","temps","porte" ,"pays","route","raison",
 "homme","cœur","femme","dieu","amour","monde" ,"voiture" ,"jour",
