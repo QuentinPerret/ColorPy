@@ -27,7 +27,7 @@ class TeintRouge():
     
     window.title("Color Experiment")
     fullScreenState = False
-    window.attributes("-zoomed", True)
+    # window.attributes("-zoomed", True)
     w, h = window.winfo_screenwidth(), window.winfo_screenheight()
     window.geometry("%dx%d" % (w, h))
 
@@ -49,7 +49,7 @@ class TeintRouge():
 
     #Fonction écrivant un mot dans la fentre de couleur verte et en position aléatoire
     def writeWord(self):    
-        self.greenWord = tk.Label(self.window, text=wordList[np.random.randint(len(wordList))], bg = self.bg, fg = self._from_rgb(0,255,0))
+        self.greenWord = tk.Label(self.window, text=wordList[np.random.randint(len(wordList))], bg = self.bg, fg = self._from_rgb(0,255,0),font=(70))
         self.greenWord.place(relx = np.random.randint(10,91)/100 , rely = np.random.randint(10,91)/100 , anchor = 'center')
 
     #Fonction traduisant du rgb en html
@@ -201,19 +201,19 @@ class TeintRouge():
         self.window.unbind("<Return>")
         self.window.unbind("<space>")
         self.window.bind("<Return>",self.firstPageS)
-        self.f.write("Seuil luminausité : "+ str(255 -self.range*self.iWhite)+ ",255,"+ str(255 -self.range*self.iWhite)+"\n")
+        self.f.write("Seuil luminosite : "+ str(255 -self.range*self.iWhite)+ ",255,"+ str(255 -self.range*self.iWhite)+"\n")
         self.str = tk.Label(self.window, text="Data Writen , please press <Enter>" , fg = "black" , bg = "white")
         self.str.place(relx = 0.5 , rely = 0.5 , anchor = 'center')
 
     ##Expérience 4 : controle saturartion
-    def firstPageLN(self , event):
+    def firstPageS(self , event):
         self.clearWin()
         self.window.configure(bg =self._from_rgb(255, 255, 255))
         str = tk.Label(self.window, text="Press any <Space> to start" , fg = "black" , bg ="white")
         str.place(relx = 0.5 , rely = 0.5 , anchor = 'center')
-        self.window.bind("<space>",self.LNTest)
+        self.window.bind("<space>",self.SatTest)
 
-    def LNTest(self, event):
+    def SatTest(self, event):
         """Fonction réalisant le test de teint"""
         self.clearWin()
         self.window.bind("<space>", self.nextColorS)
@@ -224,13 +224,13 @@ class TeintRouge():
         self.window.configure(bg = self.bg)
         self.window.mainloop()
 
-    def nextColorLN(self , event = None):
+    def nextColorS(self , event = None):
         """Fonction permettant de passer à la prochaine couleur dans l'expérience 1 """
         self.showWord()
         self.window.bind("<space>", self.configBgExpS)
         self.window.bind("<Return>", self.writeDataS)
     
-    def configBgExpLN(self , event):
+    def configBgExpS(self , event):
         """Fonction permettant de changer à la prochaine couleur dans l'expérience 1"""
         self.window.bind("<space>", self.nextColorS)
         self.clearWin()
@@ -242,63 +242,16 @@ class TeintRouge():
         self.window.configure(bg=self.bg) 
         self.writeWord()
     
-    def writeDataLN(self , event):
+    def writeDataS(self , event):
         self.window.unbind("<Return>")
         self.window.unbind("<space>")
         self.window.bind("<Return>",self.quitWin)
         self.f.write("Seuil saturation : 0,"+ str(self.range*self.iBlack)+ ",0\n")
-        self.str = tk.Label(self.window, text="Data Writen , please press <Enter>" , fg = "black" , bg = "white")
-        self.str.place(relx = 0.5 , rely = 0.5 , anchor = 'center')
-
-    ##Expérience 5 : controle saturartion
-    def firstPageSat(self):
-        self.clearWin()
-        self.window.configure(bg =self._from_rgb(255, 255, 255))
-        str = tk.Label(self.window, text="Press any <Space> to start" , fg = "black" , bg ="white")
-        str.place(relx = 0.5 , rely = 0.5 , anchor = 'center')
-        self.window.bind("<space>",self.SatTest)
-
-    def SatTest(self, event):
-        """Fonction réalisant le test de teint"""
-        self.clearWin()
-        self.window.bind("<space>", self.nextColorSat)
-        self.window.bind("<Return>", self.writeDataSat)
-        
-        self.bg=self._from_rgb(0, 255, 0)
-        self.writeWord()
-        self.window.configure(bg = self.bg)
-        self.window.mainloop()
-
-    def nextColorSat(self , event = None):
-        """Fonction permettant de passer à la prochaine couleur dans l'expérience 1 """
-        self.showWord()
-        self.window.bind("<space>", self.configBgExpSat)
-        self.window.bind("<Return>", self.writeDataSat)
-    
-    def configBgExpSat(self , event):
-        """Fonction permettant de changer à la prochaine couleur dans l'expérience 1"""
-        self.window.bind("<space>", self.nextColorSat)
-        self.clearWin()
-        if(self.iSat < 100):
-            self.iSat += 1
-            hsv = mcol.hsv_to_rgb([120/255,1,0.5])
-            print(hsv)
-            self.bg = self._from_rgb()
-        else:
-            self.window.destroy()
-        self.window.configure(bg=self.bg) 
-        print('before word')
-        self.writeWord()
-    
-    def writeDataSat(self , event):
-        self.window.unbind("<Return>")
-        self.window.unbind("<space>")
-        self.window.bind("<Return>",self.quitWin)
-        self.f.write("Seuil saturation : 0,"+ str(self.range*self.iBlack)+ ",0\n")
+        self.f.write("\n##############################\n\n")
         self.str = tk.Label(self.window, text="Data Writen , please press <Enter>" , fg = "black" , bg = "white")
         self.str.place(relx = 0.5 , rely = 0.5 , anchor = 'center')
 
 
-interface = TeintRouge("test.txt")
-interface.firstPageSat()
+interface = TeintRouge("resExp.txt")
+interface.firstPageTeintRouge()
 interface.window.mainloop()
